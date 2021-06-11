@@ -1,11 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+
+const BUSSTOP_URL = "https://arrivelah2.busrouter.sg/?id=83139";
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadBusstopData();
+  }, []); //so this hook wil run once when it is initialise since the second parameter is a null array.
+
+  function loadBusstopData() {
+    fetch(BUSSTOP_URL) //fetch data from the URL stated.
+      .then((response) => {
+        //when fetch is done then come to this step
+        return response.json(); //convert the response into json format
+      })
+      .then((responseData) => {
+        console.log(responseData);
+      });
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text style={styles.title}>Bus arrival time:</Text>
+      <Text style={styles.time}>
+        {loading ? <ActivityIndicator size="large" /> : "Loaded"}
+      </Text>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Refresh!</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );
@@ -14,8 +46,24 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 35,
+  },
+  time: {
+    fontSize: 48,
+    margin: 24,
+  },
+  button: {
+    backgroundColor: "green",
+    padding: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
