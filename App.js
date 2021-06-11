@@ -18,15 +18,20 @@ export default function App() {
     loadBusstopData();
   }, []); //so this hook wil run once when it is initialise since the second parameter is a null array.
 
-  function loadBusstopData() {
-    fetch(BUSSTOP_URL) //fetch data from the URL stated.
-      .then((response) => {
-        //when fetch is done then come to this step
-        return response.json(); //convert the response into json format
-      })
-      .then((responseData) => {
-        console.log(responseData);
-      });
+  async function loadBusstopData() {
+    //using async and await method
+    const response = await fetch(BUSSTOP_URL); //fetch data from the URL stated.
+    const responseData = await response.json();
+    console.log(responseData);
+
+    //useing .then method
+    // .then((response) => {
+    //   //when fetch is done then come to this step
+    //   return response.json(); //convert the response into json format
+    // })
+    // .then((responseData) => {
+    //   console.log(responseData);
+    // });
   }
 
   return (
